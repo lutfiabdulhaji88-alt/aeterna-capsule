@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AETERNA - THE PRIMORDIAL</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* RESET & BASE */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body, html {
+            height: 100%; width: 100%; background-color: #000;
+            font-family: 'Cinzel', serif; color: #d4af37; overflow: hidden;
+        }
+
+        /* NOMOR 2: BACKGROUND BERJARAK (SAFE ZONE) */
+        .bg-wrapper {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            padding: 40px; /* Memberi jarak agar kompas tidak terpotong */
+            background-color: #000; z-index: 1;
+            display: flex; justify-content: center; align-items: center;
+        }
+        .main-bg {
+            width: 100%; height: 100%;
+            background-image: url('/assets/bg-vault-final.jpeg');
+            background-repeat: no-repeat; background-size: contain; background-position: center center;
+        }
+
+        /* SIDEBAR NAVIGATION */
+        .sidebar {
+            height: 100%; width: 300px; position: fixed; z-index: 5000;
+            top: 0; left: -300px; background: rgba(10, 5, 0, 0.98);
+            border-right: 2px solid #d4af37; transition: 0.5s ease; padding-top: 80px;
+        }
+        .sidebar a {
+            padding: 18px 25px; text-decoration: none; font-size: 0.8rem;
+            color: #ffdf85; display: block; letter-spacing: 2px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.1); cursor: pointer;
+        }
+        .sidebar a:hover { background: rgba(212, 175, 55, 0.2); padding-left: 35px; }
+
+        .menu-btn {
+            position: fixed; top: 30px; left: 30px; z-index: 4000;
+            cursor: pointer; display: none; border: 1px solid #d4af37;
+            padding: 10px 20px; color: #d4af37; background: rgba(0,0,0,0.8);
+            font-size: 0.7rem; letter-spacing: 2px;
+        }
+
+        .web3-panel { position: fixed; top: 30px; right: 30px; z-index: 4000; display: none; }
+
+        /* NOMOR 1: UI LOGIN (KIRI BAWAH) */
+        #login-gate {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            display: flex; justify-content: flex-start; align-items: flex-end;      
+            padding: 50px; z-index: 3000; transition: 1.2s cubic-bezier(0.7, 0, 0.3, 1);
+        }
+        .vault-box {
+            width: 440px; background: rgba(26, 18, 7, 0.85); 
+            border: 2px solid #d4af37; box-shadow: 0 0 50px rgba(0,0,0,1);
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            border-radius: 4px; overflow: hidden;
+        }
+        .vh-header {
+            padding: 15px 20px; border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(40, 30, 15, 0.5);
+        }
+        .vh-title { font-size: 1.1rem; font-weight: bold; letter-spacing: 3px; color: #ffdf85; }
+        .vh-subtitle { font-size: 0.6rem; color: #d4af37; opacity: 0.9; }
+
+        .vh-body { padding: 35px 25px; display: flex; flex-direction: column; gap: 20px; }
+        .input-key {
+            width: 100%; background: rgba(0,0,0,0.6); border: 1px solid #8b6b23;
+            color: #fff; padding: 15px; text-align: center; font-size: 1rem; 
+            letter-spacing: 4px; font-family: 'Cinzel', serif; outline: none;
+        }
+        .input-key::placeholder { letter-spacing: 1px; font-size: 0.7rem; color: #555; }
+
+        .btn-gold {
+            width: 100%; background: linear-gradient(135deg, #f7d771 0%, #d4af37 50%, #f7d771 100%);
+            color: #1a1105; border: none; padding: 16px; font-weight: bold; cursor: pointer;
+            text-transform: uppercase; font-family: 'Cinzel', serif; letter-spacing: 3px;
+            transition: 0.3s;
+        }
+        .btn-gold:hover { transform: scale(1.02); filter: brightness(1.1); }
+
+        /* SYSTEM CONTENT */
+        #main-content {
+            display: none; opacity: 0; height: 100vh; overflow-y: auto;
+            padding: 120px 30px; max-width: 1000px; margin: 0 auto;
+            position: relative; z-index: 2000; transition: 1.5s;
+        }
+        .content-card { 
+            background: rgba(10, 5, 0, 0.96); border: 1px solid #d4af37; 
+            padding: 40px; margin-bottom: 30px; text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-wrapper">
+        <div class="main-bg"></div>
+    </div>
+
+    <div id="menuTrigger" class="menu-btn" onclick="toggleSidebar()">☰ SYSTEM</div>
+    <div id="sidebar" class="sidebar">
+        <a onclick="toggleSidebar()" style="color: #ff4444; border-bottom: 1px solid #ff4444;">✕ DISCONNECT</a>
+        <a onclick="showTab('tab-home')">🏛️ ARCHIVE DASHBOARD</a>
+        <a onclick="showTab('tab-token')">💎 AETERNA TOKEN</a>
+        <a onclick="showTab('tab-node')">📊 NODE STATUS</a>
+        <a href="#" onclick="location.reload()">🔒 LOCK VAULT</a>
+    </div>
+
+    <div id="web3UI" class="web3-panel">
+        <button id="walletBtn" class="btn-gold" style="padding: 10px 20px; font-size: 0.65rem;" onclick="connectWallet()">Connect Wallet</button>
+    </div>
+
+    <div id="login-gate">
+        <div class="vault-box">
+            <div class="vh-header">
+                <span class="vh-title">THE VAULT</span>
+                <span class="vh-subtitle">Sequence [XIX] translates to 19.</span>
+            </div>
+            <div class="vh-body">
+                <input type="password" id="access-key" class="input-key" placeholder="ENTER ACCESS KEY..." onkeydown="if(event.key==='Enter') executeLogin()">
+                <button onclick="executeLogin()" class="btn-gold">DECYPHER</button>
+            </div>
+            <p style="font-size: 0.5rem; text-align: center; padding-bottom: 12px; color: #8b6b23; opacity: 0.6;">CONTRACT: [0x...] (Decypher to Reveal)</p>
+        </div>
+    </div>
+
+    <div id="main-content">
+        
+        <div id="tab-home" class="tab-view">
+            <h1 style="text-align:center; letter-spacing:12px; margin-bottom: 40px;">PRIMORDIAL ARCHIVE</h1>
+            <div class="content-card">
+                <p style="margin-bottom: 20px; font-size: 0.8rem; color: #8b6b23;">SECURE PERMANENT DATA ENCRYPTION</p>
+                <form action="/save" method="POST">
+                    <textarea name="message" style="width:100%; height:150px; background:#000; color:#fff; border:1px solid #d4af37; padding:20px; margin-bottom:20px; font-family: monospace;" placeholder="Enter data to be locked in eternity..." required></textarea>
+                    <button type="submit" class="btn-gold">🔒 SEAL DATA FOREVER</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="tab-token" class="tab-view" style="display:none;">
+            <h1 style="text-align:center; letter-spacing:12px; margin-bottom: 40px;">AETERNA ASSET</h1>
+            <div class="content-card">
+                <h2 style="color:#ffdf85; margin-bottom:10px;">AETERNA (AETR)</h2>
+                <div style="border: 1px solid #d4af37; padding: 30px; margin: 25px 0; background: rgba(212,175,55,0.03);">
+                    <p style="font-size:0.8rem; opacity:0.8;">TOTAL FIXED SUPPLY</p>
+                    <h1 style="font-size:2.5rem; color:#fff; margin: 10px 0;">19,191,919</h1>
+                    <p style="font-size:0.6rem; color:#d4af37;">NETWORK: BASE MAINNET</p>
+                </div>
+                <h3 style="color:#ffdf85; letter-spacing:3px; font-size:0.9rem;">STATUS: ARCHITECTING PHASE</h3>
+                <p style="font-size:0.75rem; margin-top:20px; line-height:1.7; opacity:0.8;">
+                    Token Aeterna sedang dalam proses finalisasi Smart Contract. 
+                    Peluncuran akan dilakukan secara eksklusif untuk pendukung ekosistem awal.
+                </p>
+                <button class="btn-gold" style="margin-top:30px; opacity:0.6; cursor:wait;">PROJECT INITIALIZING...</button>
+            </div>
+        </div>
+
+        <div id="tab-node" class="tab-view" style="display:none;">
+            <h1 style="text-align:center; letter-spacing:12px; margin-bottom: 40px;">NODE NETWORK</h1>
+            <div class="content-card">
+                <p style="color: #00ff00;">SYSTEM STATUS: OPTIMIZED</p>
+                <div style="text-align: left; margin-top: 30px; font-size: 0.8rem;">
+                    <p>SYNCED BLOCK: <span id="block-num">829,102</span></p>
+                    <p>UPTIME: 99.99%</p>
+                    <p>ACTIVE NODES: 19</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            const sb = document.getElementById("sidebar");
+            sb.style.left = (sb.style.left === "0px") ? "-300px" : "0px";
+        }
+
+        function showTab(id) {
+            document.querySelectorAll('.tab-view').forEach(t => t.style.display = 'none');
+            document.getElementById(id).style.display = 'block';
+            toggleSidebar();
+        }
+
+        function executeLogin() {
+            const key = document.getElementById('access-key').value.trim();
+            if(key === "19") {
+                const gate = document.getElementById('login-gate');
+                gate.style.transform = 'translateY(110%)';
+                gate.style.opacity = '0';
+                
+                setTimeout(() => {
+                    gate.style.display = 'none';
+                    document.getElementById('main-content').style.display = 'block';
+                    document.getElementById('menuTrigger').style.display = 'block';
+                    document.getElementById('web3UI').style.display = 'block';
+                    setTimeout(() => { 
+                        document.getElementById('main-content').style.opacity = '1'; 
+                    }, 50);
+                }, 1100);
+            } else {
+                alert("ACCESS DENIED: INVALID KEY");
+            }
+        }
+
+        async function connectWallet() {
+            if (window.ethereum) {
+                try {
+                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    document.getElementById('walletBtn').innerText = accounts[0].substring(0,6) + "..." + accounts[0].substring(38);
+                } catch (err) { console.error(err); }
+            } else {
+                alert("Please install MetaMask to interact with the vault.");
+            }
+        }
+
+        // Fake live block height
+        setInterval(() => {
+            const el = document.getElementById('block-num');
+            if(el) el.innerText = parseInt(el.innerText) + 1;
+        }, 12000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<style>
+    /* Reset total agar tidak ada space putih di pinggir */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body { 
+        /* Pastikan path sesuai dengan folder assets Anda */
+        background: linear-gradient(rgba(10, 0, 20, 0.7), rgba(10, 0, 20, 0.7)), 
+                    url('assets/bg.png');
+        
+        /* Kunci utama Full Screen */
+        background-size: cover;         /* Gambar akan ditarik menutupi seluruh layar */
+        background-position: center;    /* Gambar tetap di tengah */
+        background-repeat: no-repeat;   /* Gambar tidak mengulang */
+        background-attachment: fixed;   /* Gambar tidak ikut bergeser saat di-scroll */
+        
+        min-height: 100 vh;
+        width: 100%;
+        color: #e0e0e0; 
+        font-family: 'Courier New', Courier, monospace; 
+        overflow-x: hidden;             /* Mencegah geser kanan-kiri yang tidak perlu */
+    }
+
+    .neon-border { 
+        border: 1px solid #bc13fe; 
+        box-shadow: 0 0 15px #bc13fe; 
+    }
+
+    .neon-text { 
+        color: #bc13fe; 
+        text-shadow: 0 0 10px #bc13fe; 
+    }
+
+    .glass { 
+        background: rgba(15, 0, 30, 0.75); 
+        backdrop-filter: blur(15px); 
+        border: 1px solid rgba(188, 19, 254, 0.3);
+    }
+    
+    /* Style lainnya tetap sama */
+    .card-locked { border-left: 4px solid #ff00ff; }
+    .card-ready { border-left: 4px solid #00ffaa; }
+</style>
